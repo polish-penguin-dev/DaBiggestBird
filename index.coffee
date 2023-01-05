@@ -48,5 +48,13 @@ checkUser = (guildId, userId) ->
     console.log "User is already in the DataBase!";
   else
     console.log "Adding user to the DataBase!";
-   
-  #to be finished
+    template = `{
+      "users": {
+        "${userId}": {
+          "KG": 1,
+          "Bird Shit": 0
+        }
+      }
+    }
+    `
+    await setDoc(docRef, JSON.parse(template), { merge:true });
