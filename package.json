@@ -5,16 +5,9 @@
   "description": "DaBiggestBird discord bot (wrewritten in coffeescript).",
   "main": "index.js",
   "scripts": {
-    "build": "coffee -c index.coffee && node index.js"
+    "build": "coffee -c index.coffee && coffee -c web/index.coffee && node index.js"
   },
   "keywords": [],
   "author": "Alex Wegrzyn - PingwinCo.",
-  "license": "ISC",
-  "dependencies": {
-    "@types/node": "^18.0.6",
-    "discord.js": "^14.7.1",
-    "express": "^4.18.2",
-    "firebase": "^9.15.0",
-    "node-fetch": "^3.2.6"
-  }
+  "license": "ISC"
 }
