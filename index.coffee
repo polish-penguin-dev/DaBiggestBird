@@ -2,16 +2,8 @@
 import { Client, GatewayIntentBits, Events, EmbedBuilder, ActivityType } from "discord.js";
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, setDoc, getDoc, updateDoc, deleteField } from "firebase/firestore";
-import { createRequire } from "module";
-
-require = createRequire(import.meta.url);
-express = require "express";
-app = express();
-
-app.get "/", (req, res) -> 
-  res.send "For UptimeRobot";
- 
- app.listen 3000;
+import { startWeb } from "./web/index";
+startWeb();
   
  firebaseConfig = {
   apiKey: "AIzaSyCi9t6tIXTYTBco2Ar8zGCm1lLhNV_l7Js"
