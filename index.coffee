@@ -1,3 +1,4 @@
+
 #import packages (express refuses to import with ES6 module imports so I'm going to use require instead.
 import { Client, GatewayIntentBits, Events, EmbedBuilder, ActivityType } from "discord.js";
 import { initializeApp } from "firebase/app";
@@ -5,7 +6,7 @@ import { getFirestore, doc, setDoc, getDoc, updateDoc, deleteField } from "fireb
 import { startWeb } from "./web/index";
 startWeb();
   
- firebaseConfig = {
+firebaseConfig = {
   apiKey: "AIzaSyCi9t6tIXTYTBco2Ar8zGCm1lLhNV_l7Js"
   authDomain: "dabiggestbird-d90d4.firebaseapp.com"
   projectId: "dabiggestbird-d90d4"
@@ -23,7 +24,7 @@ embedCl = "#4287f5";
 client.on "ready", () ->
   console.log green "The bot is ready!";
   client.user.setPresence({ activities:[{ name: "!help", type: ActivityType.Listening }] });
- 
+
 #TODO: Use sets instead.
 wormCooldown = [];
 weedCooldown = [];
@@ -50,22 +51,21 @@ checkUser = (guildId, userId) ->
     }
     `
     await setDoc(docRef, JSON.parse(template), { merge:true });
- 
- #Check if a users shield has broken - if they bought one from the shop.
- checkShield = (guildId, userId, channel) ->
+
+#Check if a users shield has broken - if they bought one from the shop.
+checkShield = (guildId, userId, channel) ->
        docRef = doc(db, "guilds", guildId);
        docSnap = getDoc(docRef);
        shieldHP = docSnap.data().users[userId].inventory.shield.HP;
-       
-       if shieldHP <= 0
-          newJson = `{
-           "users": {
-            "${userId}": {
-              "inventory": {
-                 "shield": deleteField()
-              }
-            }
-          }
+      if shieldHP <= 0
+        newJson = `{
+        "users": {
+        "${userId}": {
+        "inventory": {
+        "shield": deleteField()
+        }
+        }
+        }
         }`
         
         await updateDoc(docRef, JSON.parse(newJson), { merge:true });
@@ -76,16 +76,16 @@ checkUser = (guildId, userId) ->
         .setDescription(`<@${userId}>, your shield has been used up!`)
         
         channel.send({ embeds:[shieldBrokenEmbed] });
-       else
+      else
         console.log "Shield used up yet!";
-   
-  client.on Events.MessageCreate, (message) ->
+
+client.on Events.MessageCreate, (message) ->
     if message.content.toLowerCase() is "!help"
       helpEmbed = new EmbedBuilder()
-       .setColor(embedCl)
-       .setTitle("DaBiggestBird help page.")
-       .setDescription("A list of commands for the DaBiggestBird bot.")
-       .addFields(
+      .setColor(embedCl)
+      .setTitle("DaBiggestBird help page.")
+      .setDescription("A list of commands for the DaBiggestBird bot.")
+      .addFields(
           {name:"!eat @user || <food>", value:"Eat a bird smaller than you (10 min cooldown, won't work on users with shields) or eat some food (check for complete list by using !eat without any args.)"},
           {name:"!stats || !stats @user", value:"Use with no args to check your stats or mention someone to see theirs."},
           {name:"!poop", value:"-1KG +1 Bird Shit (currency)"},
@@ -94,7 +94,7 @@ checkUser = (guildId, userId) ->
           {name:"!buy <item>", value:"buy something from the shop."},
           {name:"!kidnap @user", value:"1 in 3 chance of kidnapping someone (requires a basement from the store and gives many perks like no cooldowns.)"},
           {name:"!milk @user", value:"Milk someone you have kidnapped - it's worth a lot of money."},
-          {name:"!sell <item> <quantity>" value:"Can be used to exchange BS for KG or milk for BS."},
+          {name:"!sell <item> <quantity>", value:"Can be used to exchange BS for KG or milk for BS."},
           {name:"!rob @user", value:"Rob someone who doesn't have a shield."}
        )
        .setFooter({ text:"Work in progress, bot's code is being re-written." });
