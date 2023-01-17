@@ -1,4 +1,3 @@
-
 #import packages (express refuses to import with ES6 module imports so I'm going to use require instead.
 import { Client, GatewayIntentBits, Events, EmbedBuilder, ActivityType } from "discord.js";
 import { initializeApp } from "firebase/app";
@@ -16,14 +15,16 @@ firebaseConfig = {
   measurementId: "G-03KSC7E4WG"
 }
 
-firebaseApp = initializeApp(firebaseConfig);
-db = getFirestore(firebaseApp);
-client = new Client({ intents:[GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+firebaseApp = initializeApp firebaseConfig;
+
+db = getFirestore firebaseApp;
+
+client = new Client { intents:[GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] };
 embedCl = "#4287f5";
 
 client.on "ready", () ->
   console.log green "The bot is ready!";
-  client.user.setPresence({ activities:[{ name: "!help", type: ActivityType.Listening }] });
+  client.user.setPresence { activities:[{ name: "!help", type: ActivityType.Listening }] };
 
 #TODO: Use sets instead.
 wormCooldown = [];
@@ -34,8 +35,8 @@ kidnapCooldown = [];
 
 #Check if the user is already in the DataBase.
 checkUser = (guildId, userId) ->
-  docRef = doc(db, "guilds", guildId);
-  docSnap = await getDoc(docRef);
+  docRef = doc db, "guilds", guildId
+  docSnap = await getDoc docRef;
   
   if docSnap.data().users[userId] != undefined
     console.log "User is already in the DataBase!";
@@ -50,12 +51,12 @@ checkUser = (guildId, userId) ->
       }
     }
     `
-    await setDoc(docRef, JSON.parse(template), { merge:true });
+    await setDoc docRef, JSON.parse(template), { merge:true };
 
 #Check if a users shield has broken - if they bought one from the shop.
 checkShield = (guildId, userId, channel) ->
-       docRef = doc(db, "guilds", guildId);
-       docSnap = getDoc(docRef);
+       docRef = doc db, "guilds", guildId;
+       docSnap = getDoc docRef;
        shieldHP = docSnap.data().users[userId].inventory.shield.HP;
       if shieldHP <= 0
         newJson = `{
@@ -68,23 +69,23 @@ checkShield = (guildId, userId, channel) ->
         }
         }`
         
-        await updateDoc(docRef, JSON.parse(newJson), { merge:true });
+        await updateDoc docRef, JSON.parse(newJson), { merge:true };
         
         shieldBrokenEmbed = new EmbedBuilder()
-        .setColor(embedCl)
-        .setTitle("Oh no! Your shield has broken!")
-        .setDescription(`<@${userId}>, your shield has been used up!`)
+        .setColor embedCl
+        .setTitle "Oh no! Your shield has broken!"
+        .setDescription `<@${userId}>, your shield has been used up!`
         
-        channel.send({ embeds:[shieldBrokenEmbed] });
+        channel.send { embeds:[shieldBrokenEmbed] };
       else
         console.log "Shield used up yet!";
 
 client.on Events.MessageCreate, (message) ->
     if message.content.toLowerCase() is "!help"
       helpEmbed = new EmbedBuilder()
-      .setColor(embedCl)
-      .setTitle("DaBiggestBird help page.")
-      .setDescription("A list of commands for the DaBiggestBird bot.")
+      .setColor embedCl
+      .setTitle "DaBiggestBird help page."
+      .setDescription "A list of commands for the DaBiggestBird bot."
       .addFields(
           {name:"!eat @user || <food>", value:"Eat a bird smaller than you (10 min cooldown, won't work on users with shields) or eat some food (check for complete list by using !eat without any args.)"},
           {name:"!stats || !stats @user", value:"Use with no args to check your stats or mention someone to see theirs."},
@@ -97,5 +98,5 @@ client.on Events.MessageCreate, (message) ->
           {name:"!sell <item> <quantity>", value:"Can be used to exchange BS for KG or milk for BS."},
           {name:"!rob @user", value:"Rob someone who doesn't have a shield."}
        )
-       .setFooter({ text:"Work in progress, bot's code is being re-written." });
-       message.channel.send({ embeds:[helpEmbed] });
+       .setFooter { text:"Work in progress, bot's code is being re-written." };
+       message.channel.send { embeds:[helpEmbed] };
