@@ -1,3 +1,4 @@
+
 #import packages (express refuses to import with ES6 module imports so I'm going to use require instead.
 import { Client, GatewayIntentBits, Events, EmbedBuilder, ActivityType } from "discord.js";
 import { initializeApp } from "firebase/app";
@@ -100,3 +101,19 @@ client.on Events.MessageCreate, (message) ->
        )
        .setFooter { text:"Work in progress, bot's code is being re-written." };
        message.channel.send { embeds:[helpEmbed] };
+    
+     if message.content.toLowerCase().startsWith("!eat")
+        item = message.content.slice 5;
+        
+        if !item
+          message.channel.send "please specify a person, or item!";
+          return;
+        
+        if item.startsWith() is "<@" && item.endsWith() is ">"
+          if !eatCooldown.includes message.author.id
+            eatCooldown.push message.author.id;
+            
+            delCooldown = () -> 
+             eatCooldown = eatCooldown.filter item => item != message.author.id
+            setTimeout eatCooldown, 600000;
+#To be continued. Note that the full code already exists here (https://replit.com/@polish-penguin-dev/DaBiggestBird#index.js?v=1) but loks super ugly.
