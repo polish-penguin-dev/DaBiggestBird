@@ -1,4 +1,3 @@
-
 #import packages (express refuses to import with ES6 module imports so I'm going to use require instead.
 import { Client, GatewayIntentBits, Events, EmbedBuilder, ActivityType } from "discord.js";
 import { initializeApp } from "firebase/app";
@@ -116,4 +115,4 @@ client.on Events.MessageCreate, (message) ->
             delCooldown = () -> 
              eatCooldown = eatCooldown.filter item => item != message.author.id
             setTimeout eatCooldown, 600000;
-#To be continued. Note that the full code already exists here (https://replit.com/@polish-penguin-dev/DaBiggestBird#index.js?v=1) but loks super ugly.
+#To be continued. Note that the full code already exists here (https://replit.com/@polish-penguin-dev/DaBiggestBird#index.js?v=1) but looks super ugly.
