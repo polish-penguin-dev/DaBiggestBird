@@ -13,6 +13,4 @@ startWeb = (port) ->
     res.render("src/index");
   app.listen(port)
   
-module.exports = startWeb;
-  
-  
+export { startWeb };
